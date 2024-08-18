@@ -8,6 +8,9 @@
 #include "SampleModel.h"
 
 // Constructor'ı tanımlama
+SampleModel::SampleModel(){
+
+}
 SampleModel::SampleModel(const std::string& strValue1, const std::string& strValue2, int intValue)
     : strProperty1(strValue1), strProperty2(strValue2), intProperty(intValue) {}
 

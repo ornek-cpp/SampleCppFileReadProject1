@@ -11,6 +11,7 @@
 #include <vector>
 #include <direct.h>
 #include "SampleModel.h"
+#include "SampleMemoryMappedFileSerialization.h"
 
 int main() {
 
@@ -44,9 +45,15 @@ int main() {
     // Dosyayı kapat
     inputFile.close();
 
+    std::cout << "Vector read from file." << std::endl;
     for (const auto& sampleModel : sampleModels) {
             sampleModel.display();
-        }
+    }
+
+    SampleMemoryMappedFileSerialization mmapFileSerializer;
+
+    mmapFileSerializer.saveTofile(sampleModels);
+    mmapFileSerializer.readFromFile();
 
     return 0;
 }

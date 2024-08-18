@@ -20,6 +20,7 @@ private:
 public:
     // Constructor
     SampleModel(const std::string& strProperty1, const std::string& strProperty2, int intProperty1);
+    SampleModel();
 
     // Getterlar
     std::string getStrProperty1() const;
