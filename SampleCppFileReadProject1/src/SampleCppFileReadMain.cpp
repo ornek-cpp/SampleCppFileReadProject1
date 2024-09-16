@@ -10,7 +10,7 @@
 #include <string>
 #include <vector>
 #include <direct.h>
-#include "SampleModel.h"
+#include "model/SampleModel.h"
 #include "SampleMemoryMappedFileSerialization.h"
 
 int main() {

@@ -12,7 +12,7 @@
 #include <fcntl.h>
 #include <unistd.h>
 #include <cstring>
-#include "SampleModel.h"
+#include "model/SampleModel.h"
 
 
 SampleMemoryMappedFileSerialization::SampleMemoryMappedFileSerialization() {

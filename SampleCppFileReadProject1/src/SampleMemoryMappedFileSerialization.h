@@ -9,7 +9,7 @@
 #define SRC_SAMPLEMEMORYMAPPEDFILESERIALIZATION_H_
 
 #include <vector>
-#include "SampleModel.h"
+#include "model/SampleModel.h"
 
 class SampleMemoryMappedFileSerialization {
 public:
