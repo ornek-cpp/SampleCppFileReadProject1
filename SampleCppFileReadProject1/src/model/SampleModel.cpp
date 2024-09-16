@@ -6,10 +6,11 @@
  */
 
 #include "SampleModel.h"
+#include "SampleChildModel.h"
 
-// Constructor'ı tanımlama
+// Default Constructor
 SampleModel::SampleModel(){
-
+	intProperty = -1;
 }
 SampleModel::SampleModel(const std::string& strValue1, const std::string& strValue2, int intValue)
     : strProperty1(strValue1), strProperty2(strValue2), intProperty(intValue) {}
@@ -27,8 +28,15 @@ int SampleModel::getIntProperty() const {
     return intProperty;
 }
 
+std::vector<SampleChildModel> SampleModel::getSampleChildModels() {
+	return sampleChildModels;
+}
+
 void SampleModel::display() const {
     std::cout << "StrProperty1: " << strProperty1 << ", StrProperty2: " << strProperty2
               << ", IntProperty: " << intProperty << std::endl;
+    for (const auto& sampleChildModel : sampleChildModels) {
+    	sampleChildModel.display();
+       }
 }
 

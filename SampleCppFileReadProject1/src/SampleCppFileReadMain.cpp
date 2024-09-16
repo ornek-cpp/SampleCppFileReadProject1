@@ -37,6 +37,14 @@ int main() {
     	std::string strValue2 = line.substr(6, 3);
     	SampleModel sampleModel1(strValue1, strValue2, intValue);
     	sampleModels.push_back(sampleModel1);
+    	int count = std::stoi(line.substr(9, 2));
+    	for ( int i=0; i < count; i++){
+    		int nBgn = 11 + (4 * i);
+    		std::string strChildValue1 = line.substr(nBgn, 2);
+    		std::string strChildValue2 = line.substr(nBgn+2, 2);
+    		SampleChildModel sampleChildModel1(strChildValue1, strChildValue2, i);
+    		sampleModel1.getSampleChildModels().push_back(sampleChildModel1);
+    	}
     	//sampleModel1.display();
 
         std::cout << line << std::endl;
