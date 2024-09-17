@@ -16,9 +16,9 @@ public:
 	SampleMemoryMappedFileSerialization();
 	virtual ~SampleMemoryMappedFileSerialization();
 
-	int saveTofile(std::vector<SampleModel>& sampleModels);
+	int saveTofile(std::vector<SampleModel>& sampleModels, std::vector<SampleChildModel>& sampleChildModels);
 
-	int readFromFile();
+	int readFromFile(int sampleModelSize, int sampleChildModelsCount);
 
 };
 

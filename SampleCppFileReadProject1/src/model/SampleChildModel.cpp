@@ -23,7 +23,7 @@ SampleChildModel::~SampleChildModel() {
 
 
 void SampleChildModel::display() const {
-    std::cout << "StrProperty1: " << strProperty1 << ", StrProperty2: " << strProperty2
-              << ", IntProperty: " << intProperty << std::endl;
+    std::cout << "- SampleChildModel::display(): StrProperty1 = " << strProperty1 << ", StrProperty2 = " << strProperty2
+              << ", IntProperty = " << intProperty << std::endl;
 }
 

@@ -16,6 +16,8 @@
 int main() {
 
 	std::vector<SampleModel> sampleModels;
+	std::vector<SampleChildModel> sampleChildModels;
+	int sampleChildModelsCount = 0;
 
 	 char cwd[1024];
 	    _getcwd(cwd, sizeof(cwd));
@@ -25,29 +27,34 @@ int main() {
 
     // Dosya açılmadıysa hata mesajı ver
     if (!inputFile.is_open()) {
-        std::cerr << "Dosya açılamadı." << std::endl;
+        std::cerr << "Cannot open file!" << std::endl;
         return 1;
     }
 
     std::string line;
     // Dosyadan satır satır okuma
     while (std::getline(inputFile, line)) {
+    	std::cout << "line = " << line << std::endl;
     	int intValue = std::stoi(line.substr(0, 3));
     	std::string strValue1 = line.substr(3, 3);
     	std::string strValue2 = line.substr(6, 3);
-    	SampleModel sampleModel1(strValue1, strValue2, intValue);
+    	int recurSegCount = std::stoi(line.substr(9, 2));
+    	std::vector<SampleChildModel> tmpSampleChildModels(0);
+    	SampleModel sampleModel1(strValue1, strValue2, intValue, tmpSampleChildModels);
     	sampleModels.push_back(sampleModel1);
-    	int count = std::stoi(line.substr(9, 2));
-    	for ( int i=0; i < count; i++){
+    	for ( int i=0; i < recurSegCount; i++){
+    		sampleChildModelsCount++;
+    		std::cout << "i = " << i << std::endl;
     		int nBgn = 11 + (4 * i);
     		std::string strChildValue1 = line.substr(nBgn, 2);
     		std::string strChildValue2 = line.substr(nBgn+2, 2);
     		SampleChildModel sampleChildModel1(strChildValue1, strChildValue2, i);
-    		sampleModel1.getSampleChildModels().push_back(sampleChildModel1);
+    		//sampleChildModel1.display();
+    		sampleModel1.addSampleChildModel(sampleChildModel1);
+    		sampleChildModels.push_back(sampleChildModel1);
     	}
-    	//sampleModel1.display();
+    	sampleModel1.display();
 
-        std::cout << line << std::endl;
     }
 
     // Dosyayı kapat
@@ -57,11 +64,14 @@ int main() {
     for (const auto& sampleModel : sampleModels) {
             sampleModel.display();
     }
+    for (const auto& sampleChildModel : sampleChildModels) {
+              sampleChildModel.display();
+      }
 
     SampleMemoryMappedFileSerialization mmapFileSerializer;
 
-    mmapFileSerializer.saveTofile(sampleModels);
-    mmapFileSerializer.readFromFile();
+    mmapFileSerializer.saveTofile(sampleModels, sampleChildModels);
+    mmapFileSerializer.readFromFile(sampleModels.size(), sampleChildModelsCount);
 
     return 0;
 }

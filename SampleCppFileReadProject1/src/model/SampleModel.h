@@ -23,7 +23,8 @@ private:
 
 public:
     // Constructor
-    SampleModel(const std::string& strProperty1, const std::string& strProperty2, int intProperty1);
+    //SampleModel(const std::string& strProperty1, const std::string& strProperty2, int intProperty1);
+    SampleModel(const std::string& strProperty1, const std::string& strProperty2, int intProperty1, std::vector<SampleChildModel>& sampleChildModels);
     SampleModel();
 
     // Getters
@@ -34,6 +35,7 @@ public:
 
     // Helper functions
     void display() const;
+    void addSampleChildModel(SampleChildModel& sampleChildModel);
 };
 
 

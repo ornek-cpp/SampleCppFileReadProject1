@@ -13,6 +13,7 @@
 #include <unistd.h>
 #include <cstring>
 #include "model/SampleModel.h"
+#include "model/SampleChildModel.h"
 
 
 SampleMemoryMappedFileSerialization::SampleMemoryMappedFileSerialization() {
@@ -24,7 +25,7 @@ SampleMemoryMappedFileSerialization::~SampleMemoryMappedFileSerialization() {
 	// TODO Auto-generated destructor stub
 }
 
-int SampleMemoryMappedFileSerialization::saveTofile(std::vector<SampleModel>& sampleModels){
+int SampleMemoryMappedFileSerialization::saveTofile(std::vector<SampleModel>& sampleModels, std::vector<SampleChildModel>& sampleChildModels){
 
     const char* filename = "sample_models.dat";
 
@@ -36,7 +37,8 @@ int SampleMemoryMappedFileSerialization::saveTofile(std::vector<SampleModel>& sa
 	}
 
 	// Determine file size
-	DWORD filesize = sampleModels.size() * sizeof(SampleModel);
+	DWORD filesize = (sampleModels.size() * sizeof(SampleModel)) +  sampleChildModels.size() * sizeof(SampleChildModel);
+	//DWORD filesize = sampleChildModels.size() * sizeof(SampleChildModel);
 	SetFilePointer(hFile, filesize - 1, NULL, FILE_BEGIN);
 	SetEndOfFile(hFile);
 
@@ -58,7 +60,9 @@ int SampleMemoryMappedFileSerialization::saveTofile(std::vector<SampleModel>& sa
 	}
 
 	// Write vector data to memory mapped file
-	std::memcpy(pMap, sampleModels.data(), filesize);
+	std::memcpy(pMap , sampleChildModels.data(), sampleChildModels.size() * sizeof(SampleChildModel));
+	std::memcpy(pMap + (sampleChildModels.size() * sizeof(SampleChildModel)), sampleModels.data(), sampleModels.size() * sizeof(SampleModel));
+
 
     // Close map view and file
 	UnmapViewOfFile(pMap);
@@ -71,7 +75,7 @@ int SampleMemoryMappedFileSerialization::saveTofile(std::vector<SampleModel>& sa
 }
 
 
-int SampleMemoryMappedFileSerialization::readFromFile(){
+int SampleMemoryMappedFileSerialization::readFromFile(int sampleModelSize, int sampleChildModelsCount){
     const char* filename = "sample_models.dat";
 
     // Open file to read
@@ -81,7 +85,8 @@ int SampleMemoryMappedFileSerialization::readFromFile(){
 		return 1;
 	}
 
-	DWORD filesize = 2 * sizeof(SampleModel);
+	DWORD filesize = sampleModelSize * sizeof(SampleModel) + sampleChildModelsCount * sizeof(SampleChildModel);
+	//DWORD filesize = sampleChildModelsCount * sizeof(SampleChildModel);
 
 
 	// Create memory map
@@ -102,8 +107,12 @@ int SampleMemoryMappedFileSerialization::readFromFile(){
 	}
 
 	// Copy memory data to vector
-	std::vector<SampleModel> sampleModels(filesize / sizeof(SampleModel));
-	std::memcpy(sampleModels.data(), pMap, filesize);
+	std::vector<SampleModel> sampleModels(sampleModelSize);
+	std::vector<SampleChildModel> sampleChildModels(sampleChildModelsCount);
+
+	std::memcpy(sampleChildModels.data(), pMap , sampleChildModelsCount * sizeof(SampleChildModel));
+	std::memcpy(sampleModels.data(), pMap + (sampleChildModelsCount * sizeof(SampleChildModel)) , sampleModelSize * sizeof(SampleModel));
+
 
 	// Close memory view and file
 	UnmapViewOfFile(pMap);
@@ -111,10 +120,13 @@ int SampleMemoryMappedFileSerialization::readFromFile(){
 	CloseHandle(hFile);
 
     // Display Vector data
-	std::cout << "Vector read from memory mapped file." << std::endl;
+	std::cout << "\nVector read from memory mapped file." << std::endl;
     for (const auto& sampleModel : sampleModels) {
                 sampleModel.display();
     }
+    for (const auto& sampleChildModel : sampleChildModels) {
+                  sampleChildModel.display();
+      }
     std::cout << std::endl;
 
     return 0;
