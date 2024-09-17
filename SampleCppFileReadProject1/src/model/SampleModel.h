@@ -4,18 +4,20 @@
  *  Created on: 4 Ağu 2024
  *      Author: ACER
  */
+
 #include <iostream>
 #include <string>
-#include "SampleChildModel.h"
 #include <vector>
 
 #ifndef SRC_SAMPLEMODEL_H_
 #define SRC_SAMPLEMODEL_H_
 
+class SampleChildModel;
 
 class SampleModel {
 private:
-    std::string strProperty1;
+	std::string id;
+	std::string strProperty1;
     std::string strProperty2;
     int intProperty;
 
@@ -24,7 +26,7 @@ private:
 public:
     // Constructor
     //SampleModel(const std::string& strProperty1, const std::string& strProperty2, int intProperty1);
-    SampleModel(const std::string& strProperty1, const std::string& strProperty2, int intProperty1, std::vector<SampleChildModel>& sampleChildModels);
+    SampleModel(const std::string& id, const std::string& strProperty1, const std::string& strProperty2, int intProperty1, std::vector<SampleChildModel>& sampleChildModels);
     SampleModel();
 
     // Getters
